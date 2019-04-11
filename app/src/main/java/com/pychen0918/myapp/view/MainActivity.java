@@ -1,34 +1,48 @@
-package com.pychen0918.myapp;
+package com.pychen0918.myapp.view;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Toast;
+
+import com.pychen0918.myapp.R;
+import com.pychen0918.myapp.model.DogModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private int index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Configure toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final TextView username = findViewById(R.id.username);
-        username.setText("Raymond");
+        // New: Configure recycler view (for dogs)
+        List<DogModel> dogs = new ArrayList<>();
+        dogs.add(new DogModel("Hugo", "French Bulldog", "Black", "Male", 2011, 11, 11));
+        dogs.add(new DogModel("Bagel", "Mixed", "Yellow on White", "Male", 2016, 2, 1));
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_dog_list);
+        DogListAdapter adapter = new DogListAdapter(this, dogs);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        // Configure FAB
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                username.setText(String.valueOf(index));
-                index++;
+                Toast.makeText(MainActivity.this, R.string.dog_bark, Toast.LENGTH_SHORT).show();
             }
         });
     }
